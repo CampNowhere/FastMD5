@@ -1,4 +1,4 @@
-## Fast x64 MD5
+# FastMD5
 MD5 library for x64 written in assembler
 
 Requirements to compile:
