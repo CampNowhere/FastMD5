@@ -24,7 +24,11 @@ int main(int argc, char ** argv)
   memset(buffer, 0, 64);
   memcpy(buffer, teststr, msglen);
   char digest[16];
-  md5_digest(new, buffer, digest, msglen);
+  buffer[msglen] = (uint8_t) 0x80;
+  uint64_t msglen_bits = msglen << 3;
+  memcpy(&buffer[56], &msglen_bits, 8);
+  md5_block(new, buffer);
+  memcpy(digest, new, 16);
   int i;
   for(i = 0; i < 16; i++)
   {

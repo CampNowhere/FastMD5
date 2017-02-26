@@ -21,5 +21,5 @@ int md5_init(md5state * st)
   return 1;
 }
 
-int md5_digest(md5state * st, char * buffer, char * digest, uint64_t msglen);
+int md5_block(md5state * st, char * buffer);
 

@@ -7,22 +7,15 @@ D_OFFSET equ 12
 F_OFFSET equ 16
 G_OFFSET equ 20
 DTEMP_OFFSET equ 24 
-global md5_digest
+global md5_block
 section .text
 
-md5_digest:
-	push rbp
-	mov rbp, rsp
+md5_block:
+	; push rbp
+	; mov rbp, rsp
+	; Fuck the base pointer, and the stack while we're at it
 	; rdi = md5state address
 	; rsi = buffer address
-	; rdx = digest address
-	; rcx = message length
-
-	; Get important values for later out of the GP registers
-	; r8 = digest address
-	; r9 = message length
-	mov r8, rdx
-	mov r9, rcx
 
 	; Move init values ito registers for quick work.
 	mov r10d, dword [rdi + A_OFFSET]
@@ -30,11 +23,6 @@ md5_digest:
 	mov r12d, dword [rdi + C_OFFSET]
 	mov r13d, dword [rdi + D_OFFSET]
 	
-	; Prepare buffer for computation
-	mov byte [rsi + rcx], 0x80
-	sal rcx, 3
-	mov qword [rsi + 56], rcx
-
 	; Start rolling
 	mov rcx, 0
 l:
@@ -113,18 +101,8 @@ m:
 	add dword [rdi + B_OFFSET], r11d
 	add dword [rdi + C_OFFSET], r12d
 	add dword [rdi + D_OFFSET], r13d
-	; And write to digest
-	mov eax, dword [rdi + A_OFFSET]
-	mov dword [r8], eax
-	mov eax, dword [rdi + B_OFFSET]
-	mov dword [r8 + 4], eax
-	mov eax, dword [rdi + C_OFFSET]
-	mov dword [r8 + 8], eax
-	mov eax, dword [rdi + D_OFFSET]
-	mov dword [r8 + 12], eax
 q:
-
-	pop rbp 
+	; pop rbp 
 	ret
 
 
